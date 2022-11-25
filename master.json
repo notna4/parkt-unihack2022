@@ -1,0 +1,52 @@
+[
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 6,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor1",
+        "lat": 45.767071648824505,
+        "lng": 21.222082559206694,
+        "line": [
+            {
+                "latitude": 45.765230495432355,
+                "longitude": 21.22400603403022
+            },
+            {
+                "latitude": 45.76823164481462,
+                "longitude": 21.22084141864562
+            },
+            {
+                "latitude": 45.76823164481462,
+                "longitude": 21.22084141864562
+            }
+        ]
+    },
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 5,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor2",
+        "lat": 45.77123606047856,
+        "lng": 21.21823553585463,
+        "line": [
+            {
+                "latitude": 45.770307818861,
+                "longitude": 21.218861573933435
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            }
+        ]
+    }
+]
