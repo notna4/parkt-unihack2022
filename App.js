@@ -9,6 +9,7 @@ import RadioButtonRN from 'radio-buttons-react-native';
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
+import Cyclists from "./Cyclists.json";
 
 
 function FreeSpots({data}) {
@@ -141,8 +142,9 @@ function FreeSpots({data}) {
 export default function App() {
   const [short, setShort] = useState(null);
   const [emptySpots, setEmptySpots] = useState([]);
-  const [isSelected, setIsSelected] = useState(''); 
+  const [isSelected, setIsSelected] = useState(' '); 
   const [goRegion, setGoRegion] = useState({});
+  const [bike, setBike] = useState('B');
 
   const bottomSheetModalRef = useRef(null);
   
@@ -187,6 +189,8 @@ export default function App() {
                 ); 
               })}
 
+              
+
             {parkingSpaces.map(({streetname, lat, lng, shortname, emptyspots, price, zona}) => {
                 //console.log(shortname + " " + lat);
                 return (
@@ -216,6 +220,48 @@ export default function App() {
                 >
                   <View>
                     <Text style={{fontSize: 15, fontWeight: '800', color: `${zona.toLowerCase()}`==="yellow" ? 'black' : 'white'}}>{emptyspots + " spots | RON " + price}</Text>
+                  </View>
+                </Marker>
+                ); 
+              })}
+
+              {Cyclists.map(({streetname, lat, lng, totalspots}) => {
+                //console.log(shortname + " " + lat);
+                var on = 0;
+                return (
+                <Marker
+                  style={{borderRadius: 20, backgroundColor: "white", padding: 10 }}
+                  coordinate={{
+                    latitude: lat,
+                    longitude: lng
+                  }}
+                  key={streetname}
+                  onPress={() => {
+                    if(on === 0) {
+                      setBike(streetname + " | " + totalspots + " spots");
+                      on = 1;
+                    }
+                    else {
+                      setBike('B');
+                      on = 0;
+                    }
+                    const coordinate = {
+                      latitude: lat,
+                      longitude: lng,
+                      latitudeDelta: 0.0022,
+                      longitudeDelta: 0.0121
+                    }
+                    _mapView.animateToRegion({
+                      latitude: lat,
+                      longitude: lng,
+                      latitudeDelta: 0.0022,
+                      longitudeDelta: 0.0121,
+
+                    }, 1000)
+                  }}
+                >
+                  <View>
+                    <Text style={{fontSize: 15, fontWeight: '800', color: "black", padding: 3}}>{bike}</Text>
                   </View>
                 </Marker>
                 ); 

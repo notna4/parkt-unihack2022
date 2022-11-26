@@ -1,0 +1,32 @@
+[
+    {
+        "streetname": "Univ. Poli. Timisoara",
+        "totalspots": 30,
+        "lat": 45.747720113529766,
+        "lng": 21.226063375410874
+    },
+    {
+        "streetname": "Univ. de Vest Timisoara",
+        "totalspots": 20,
+        "lat": 45.74750443099666,
+        "lng": 21.232067781486617
+    },
+    {
+        "streetname": "Iullius Town",
+        "totalspots": 100,
+        "lat": 45.76726654732311,
+        "lng": 21.225686636038105
+    },
+    {
+        "streetname": "Baza 2",
+        "totalspots": 20,
+        "lat": 45.742620135312634,
+        "lng": 21.248282828731462
+    },
+    {
+        "streetname": "Prefectura",
+        "totalspots": 20,
+        "lat": 45.755747,
+        "lng": 21.236958
+    }
+]
