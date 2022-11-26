@@ -1,0 +1,314 @@
+[
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 6,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor1",
+        "lat": 45.767071648824505,
+        "lng": 21.222082559206694,
+        "line": [
+            {
+                "latitude": 45.765230495432355,
+                "longitude": 21.22400603403022
+            },
+            {
+                "latitude": 45.76823164481462,
+                "longitude": 21.22084141864562
+            },
+            {
+                "latitude": 45.76823164481462,
+                "longitude": 21.22084141864562
+            }
+        ]
+    },
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 2,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor2",
+        "lat": 45.77123606047856,
+        "lng": 21.21823553585463,
+        "line": [
+            {
+                "latitude": 45.770307818861,
+                "longitude": 21.218861573933435
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            }
+        ]
+    },
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 3,
+        "price": 1,
+        "zona": "Blue",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor3",
+        "lat": 45.77525751207635,
+        "lng": 21.213751019891088,
+        "line": [
+            {
+                "latitude": 45.773204776867885,
+                "longitude": 21.215780704013294
+            },
+            {
+                "latitude": 45.7769127128746,
+                "longitude": 21.211971142836557
+            },
+            {
+                "latitude": 45.7769127128746,
+                "longitude": 21.211971142836557
+            }
+        ]
+    },
+    {
+        "streetname": "Calea Torontalului",
+        "totalspots": 10,
+        "emptyspots": 2,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "caltor2",
+        "lat": 45.77123606047856,
+        "lng": 21.21823553585463,
+        "line": [
+            {
+                "latitude": 45.770307818861,
+                "longitude": 21.218861573933435
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            },
+            {
+                "latitude": 45.772176401979344,
+                "longitude": 21.217039984959186
+            }
+        ]
+    },
+    {
+        "streetname": "Gh. Lazar",
+        "totalspots": 10,
+        "emptyspots": 4,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Circumvalatiunii",
+        "shortname": "ghlaz",
+        "lat": 45.76091147876688,
+        "lng": 21.216013615623574,
+        "line": [
+            {
+                "latitude": 45.75937295829539,
+                "longitude": 21.22008402439534
+            },
+            {
+                "latitude": 45.760237187923046,
+                "longitude": 21.218256575239423
+            },
+            {
+                "latitude": 45.763026589948886,
+                "longitude": 21.21141284017516
+            }
+        ]
+    },
+    {
+        "streetname": "B-dul. Mihai Viteazul",
+        "totalspots": 10,
+        "emptyspots": 6,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Elisabetin",
+        "shortname": "mihvit",
+        "lat": 45.745636507236185,
+        "lng": 21.225071796297946,
+        "line": [
+            {
+                "latitude": 45.74803849219957,
+                "longitude": 21.225540075533058
+            },
+            {
+                "latitude": 45.7467410365822,
+                "longitude": 21.225207776906974
+            },
+            {
+                "latitude": 45.74260554133934,
+                "longitude": 21.22580907906212
+            }
+        ]
+    },
+    {
+        "streetname": "Splaiul Tudor Vladimirescu",
+        "totalspots": 10,
+        "emptyspots": 6,
+        "price": 1.5,
+        "zona": "Yellow",
+        "district": "Cetate",
+        "shortname": "tudvla",
+        "lat": 45.74877736698047,
+        "lng": 21.222576768951267,
+        "line": [
+            {
+                "latitude": 45.748039124295886,
+                "longitude": 21.224743471259025
+            },
+            {
+                "latitude": 45.74836492145221,
+                "longitude": 21.223575523103452
+            },
+            {
+                "latitude": 45.749224562109745,
+                "longitude": 21.220590889355194
+            }
+        ]
+    },
+    {
+        "streetname": "Regele Ferdinand I",
+        "totalspots": 10,
+        "emptyspots": 2,
+        "price": 4,
+        "zona": "Green",
+        "district": "Cetate",
+        "shortname": "regferd",
+        "lat": 45.750186784247234,
+        "lng": 21.225316454070903,
+        "line": [
+            {
+                "latitude": 45.75081049464999,
+                "longitude": 21.22523362704855
+            },
+            {
+                "latitude": 45.74980018854547,
+                "longitude": 21.225415599856138
+            },
+            {
+                "latitude": 45.74980018854547,
+                "longitude": 21.225415599856138
+            }
+        ]
+    },
+    {
+        "streetname": "Aleea F.C. Ripensia",
+        "totalspots": 10,
+        "emptyspots": 3,
+        "price": 1,
+        "zona": "Blue",
+        "district": "Cetate",
+        "shortname": "ripi",
+        "lat": 45.74434508824526,
+        "lng": 21.241724104348755,
+        "line": [
+            {
+                "latitude": 45.74325699281066,
+                "longitude": 21.2425937607583
+            },
+            {
+                "latitude": 45.74526319341577,
+                "longitude": 21.241197576147076
+            },
+            {
+                "latitude": 45.74526319341577,
+                "longitude": 21.241197576147076
+            }
+        ]
+    },
+    {
+        "streetname": "Patriarh Miron Cristea",
+        "totalspots": 10,
+        "emptyspots": 2,
+        "price": 2,
+        "zona": "Red",
+        "district": "Cetate",
+        "shortname": "mircri",
+        "lat": 45.752639776528106,
+        "lng": 21.232042930425457,
+        "line": [
+            {
+                "latitude": 45.751530511530795,
+                "longitude": 21.227124150011832
+            },
+            {
+                "latitude": 45.75166852820701,
+                "longitude": 21.228722347986814
+            },
+            {
+                "latitude": 45.75267328002096,
+                "longitude": 21.232179836066905
+            },
+            {
+                "latitude": 45.7533467846217,
+                "longitude": 21.233746386313282
+            },
+            {
+                "latitude": 45.75413068994162,
+                "longitude": 21.23445845477181
+            },
+            {
+                "latitude": 45.75533964883544,
+                "longitude": 21.235138875863857
+            }
+        ]
+    },
+    {
+        "streetname": "Paris",
+        "totalspots": 10,
+        "emptyspots": 5,
+        "price": 4,
+        "zona": "Green",
+        "district": "Cetate",
+        "shortname": "paris",
+        "lat": 45.755980614425695,
+        "lng": 21.223230626523574,
+        "line": [
+            {
+                "latitude": 45.75664855910175,
+                "longitude": 21.22355099113742
+            },
+            {
+                "latitude": 45.75525193829605,
+                "longitude": 21.223135684051723
+            },
+            {
+                "latitude": 45.75525193829605,
+                "longitude": 21.223135684051723
+            }
+        ]
+    },
+    {
+        "streetname": "Popa Sapca",
+        "totalspots": 10,
+        "emptyspots": 3,
+        "price": 2,
+        "zona": "Red",
+        "district": "Circumvalatiunii",
+        "shortname": "popsap",
+        "lat": 45.760882346136256,
+        "lng": 21.232460540825393,
+        "line": [
+            {
+                "latitude": 45.7624706143951,
+                "longitude": 21.232932657444206
+            },
+            {
+                "latitude": 45.75889932227609,
+                "longitude": 21.23240256215295
+            },
+            {
+                "latitude": 45.75889932227609,
+                "longitude": 21.23240256215295
+            }
+        ]
+    }
+]
