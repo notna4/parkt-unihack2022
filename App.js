@@ -1,11 +1,8 @@
 import 'react-native-gesture-handler';
 import React, { useCallback, useMemo, useRef, useState, useEffect, Fragment } from 'react';
 import MapView, {Polyline, Marker} from 'react-native-maps';
-import { StyleSheet, View, Text, Button, ScrollView, TouchableOpacity, ViewStyle  } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, TouchableOpacity, ViewStyle, TextInput  } from 'react-native';
 import parkingSpaces from "./master.json";
-import caltor1 from "./Parking/caltor1.json";
-import Animated, {Extrapolate, interpolate, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated';
-import {toRad} from "react-native-redash";
 import parkingInfo from "./parkingInfo.json";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import RadioButtonRN from 'radio-buttons-react-native';
@@ -15,7 +12,6 @@ LogBox.ignoreAllLogs();//Ignore all log notifications
 import Cyclists from "./Cyclists.json";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createOpenLink } from 'react-native-open-maps';
 import * as Linking from 'expo-linking';
 
 
@@ -39,6 +35,8 @@ function FreeSpots({data, refs, navigation}) {
 
     const [finHour, setFinHour] = useState(hours+1);
     const [finMin, setFinMin] = useState(min);
+    
+    const [text, setText] = useState('TM22UNI');
 
     return (
       <View style={styles.scrollView}>
@@ -71,37 +69,43 @@ function FreeSpots({data, refs, navigation}) {
                     <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{name}</Text>
                   </View>
                 </View>
-                <View style={styles.priceTag}>
-                  <View style={{backgroundColor: "rgba(40, 58, 63, 0.33)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30}}>
-                    <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{price} RON/hour</Text>
-                  </View>
+                <View style={{borderColor:'white',borderBottomWidth:5, padding: 10, marginRight: 30, marginLeft: 30, borderRadius: 20, backgroundColor: "rgba(40, 58, 63, 0.33)"}}>
+                  <TextInput defaultValue={text} onChangeText={newText => setText(newText)} style={{fontSize: 20, color:"white", fontWeight:"500", textAlign: "center", paddingRight:30, paddingLeft: 30}}/>
                 </View>
-                <View style={styles.priceTag}>
-                  <View style={{backgroundColor: "rgba(108, 140, 243, 0.8)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30}}>
-                    {parkingSpaces.map(({shortname, lat, lng, streetname}) => {
-                              if(shortname === data) {
-                                if(one == 0) {
-                                  one = 1;
-                                  console.log(shortname);
-                                  return (
-                                    <TouchableOpacity onPress={() => {
-                                        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
-                                        const latLng = `${lat},${lng}`;
-                                        const label = `${streetname}`;
-                                        const url = Platform.select({
-                                          ios: `${scheme}${label}@${latLng}`,
-                                          android: `${scheme}${latLng}(${label})`
-                                        });
+                <View style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                  <View style={styles.priceTag}>
+                    <View style={{backgroundColor: "rgba(40, 58, 63, 0.33)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30, marginRight: 10}}>
+                      <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{price} RON/hour</Text>
+                    </View>
+                  </View>
+                  
+                  <View style={styles.priceTag}>
+                    <View style={{backgroundColor: "rgba(108, 140, 243, 0.8)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30}}>
+                      {parkingSpaces.map(({shortname, lat, lng, streetname}) => {
+                                if(shortname === data) {
+                                  if(one == 0) {
+                                    one = 1;
+                                    console.log(shortname);
+                                    return (
+                                      <TouchableOpacity onPress={() => {
+                                          const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+                                          const latLng = `${lat},${lng}`;
+                                          const label = `${streetname}`;
+                                          const url = Platform.select({
+                                            ios: `${scheme}${label}@${latLng}`,
+                                            android: `${scheme}${latLng}(${label})`
+                                          });
 
-                                            
-                                        Linking.openURL(url);
-                                      }}>
-                                      <Text style={{fontSize: 17, fontWeight: "600", color: "white"}}>See On Maps</Text>
-                                    </TouchableOpacity>
-                                  );
+                                              
+                                          Linking.openURL(url);
+                                        }}>
+                                        <Text style={{fontSize: 17, fontWeight: "600", color: "white"}}>See On Maps</Text>
+                                      </TouchableOpacity>
+                                    );
+                                  }
                                 }
-                              }
-                          })}
+                            })}
+                    </View>
                   </View>
                 </View>
                 <View style={{backgroundColor: 'rrgba(40, 58, 63, 0.33)', display: 'flex', flexDirection: 'column', margin: 10, borderRadius: 40, padding: 10}}>
@@ -479,8 +483,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     margin: 5,
-    marginLeft: 60,
-    marginRight: 60,
+    marginLeft: 0,
+    marginRight: 0,
     borderRadius: 60
   },
   empSpotsContainerBig: {
