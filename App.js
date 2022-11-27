@@ -1,8 +1,11 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import 'react-native-gesture-handler';
+import React, { useCallback, useMemo, useRef, useState, useEffect, Fragment } from 'react';
 import MapView, {Polyline, Marker} from 'react-native-maps';
-import { StyleSheet, View, Text, Button, ScrollView, TouchableOpacity  } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, TouchableOpacity, ViewStyle  } from 'react-native';
 import parkingSpaces from "./master.json";
 import caltor1 from "./Parking/caltor1.json";
+import Animated, {Extrapolate, interpolate, useAnimatedStyle, useDerivedValue} from 'react-native-reanimated';
+import {toRad} from "react-native-redash";
 import parkingInfo from "./parkingInfo.json";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import RadioButtonRN from 'radio-buttons-react-native';
@@ -10,23 +13,32 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 import Cyclists from "./Cyclists.json";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createOpenLink } from 'react-native-open-maps';
+import * as Linking from 'expo-linking';
 
 
-function FreeSpots({data}) {
+function FreeSpots({data, refs, navigation}) {
+    console.log("data " + data);
 
-    const [park, setPark] = useState('Spot');
+    var one = 0;
+
+    const [park, setPark] = useState('Select Spot');
+    const [auxPark, setAuxPark] = useState('Select Spot');
     const [numberHours, setNumberHours] = useState(1);
     
 
     var hours = new Date().getHours(); //Current Hours
-    var min = new Date().getMinutes(); //Current Minutes
+    var mymin = new Date().getMinutes(); //Current Minutes
+    var min = ("0" + mymin).slice(-2);
+    
 
     const [currHour, setCurrHour] = useState(hours);
     const [currMin, setCurrMin] = useState(min);
 
     const [finHour, setFinHour] = useState(hours+1);
     const [finMin, setFinMin] = useState(min);
-
 
     return (
       <View style={styles.scrollView}>
@@ -46,6 +58,9 @@ function FreeSpots({data}) {
               index[i] = i+1;
               //console.log(states);
             }
+
+            
+
             return (
               <View>
                 <View style={styles.containerModal}>
@@ -61,20 +76,48 @@ function FreeSpots({data}) {
                     <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{price} RON/hour</Text>
                   </View>
                 </View>
+                <View style={styles.priceTag}>
+                  <View style={{backgroundColor: "rgba(108, 140, 243, 0.8)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30}}>
+                    {parkingSpaces.map(({shortname, lat, lng, streetname}) => {
+                              if(shortname === data) {
+                                if(one == 0) {
+                                  one = 1;
+                                  console.log(shortname);
+                                  return (
+                                    <TouchableOpacity onPress={() => {
+                                        const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+                                        const latLng = `${lat},${lng}`;
+                                        const label = `${streetname}`;
+                                        const url = Platform.select({
+                                          ios: `${scheme}${label}@${latLng}`,
+                                          android: `${scheme}${latLng}(${label})`
+                                        });
+
+                                            
+                                        Linking.openURL(url);
+                                      }}>
+                                      <Text style={{fontSize: 17, fontWeight: "600", color: "white"}}>See On Maps</Text>
+                                    </TouchableOpacity>
+                                  );
+                                }
+                              }
+                          })}
+                  </View>
+                </View>
                 <View style={{backgroundColor: 'rrgba(40, 58, 63, 0.33)', display: 'flex', flexDirection: 'column', margin: 10, borderRadius: 40, padding: 10}}>
                   <Text style={{fontSize: 17, fontWeight: '800', color: 'white', marginBottom: 10, padding: 10}}>Select your parking spot</Text>
                   <View style={styles.empSpotsContainerBig}>
                       <View style={styles.empSpotsContainer}>
                         {/* <Button style={isSelected === type ? styles.activeButton : styles.button} onPress={() => buttonHandler()} title={"Spot " + (i+1).toString()} /> */}
                         <RadioButtonRN
-                            key={states}
                             style={{fontWeight: "bold", borderRadius: 30}}
                             textStyle={{fontWeight: "800", color: 'white'}}
                             boxActiveBgColor="rgba(0, 0, 0, 0.33)"
                             boxDeactiveBgColor="rgba(27, 71, 83, 0.33)"
                             data={states}
                             selectedBtn={(e) => {
-                              setPark(e.label);
+                              setPark("Park at " + e.label);
+                              setAuxPark("Park at " + e.label);
                             }}
                           />
                       </View>
@@ -94,20 +137,26 @@ function FreeSpots({data}) {
                 </View>
                 <View style={styles.containerModalHours}>
                   <View style={{ borderRadius: 20}}>
-                    <TouchableOpacity style={{backgroundColor: "rgba(11, 22, 25, 0.33)", paddingRight: 20, paddingLeft: 20, borderRadius: 20, display: 'flex', justifyContent: 'center', alignContent: 'center'}} onPress={() => {
+                    <TouchableOpacity disabled={`${numberHours}` == 1 ? true : false} style={{backgroundColor: "rgba(11, 22, 25, 0.33)", paddingRight: 20, paddingLeft: 20, borderRadius: 20, display: 'flex', justifyContent: 'center', alignContent: 'center'}} onPress={() => {
                       setNumberHours(numberHours - 1);
                       setFinHour(finHour - 1);
+                      if(finHour-1 < 20) {
+                        setPark(auxPark);
+                      }
                     }}>
-                      <Text style={{fontSize: 35, fontWeight: "800", textAlign: 'center', textAlignVertical: 'center'}}>-</Text>
+                      <Text style={{fontSize: 35, fontWeight: "800", textAlign: 'center', textAlignVertical: 'center' }}>-</Text>
                     </TouchableOpacity>
                   </View>
                   <View style={{backgroundColor: "rgba(11, 22, 25, 0.33)", padding: 5, paddingRight: 20, paddingLeft: 20, borderRadius: 20, display: 'flex', justifyContent: 'center'}}>
                     <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{numberHours} hours</Text>
                   </View>
                   <View style={{ borderRadius: 20}}>
-                    <TouchableOpacity style={{backgroundColor: "rgba(11, 22, 25, 0.33)", paddingRight: 20, paddingLeft: 20, borderRadius: 20}} onPress={() => {
+                    <TouchableOpacity disabled={`${finHour}` == 20 ? true : false} style={{backgroundColor: "rgba(11, 22, 25, 0.33)", paddingRight: 20, paddingLeft: 20, borderRadius: 20}} onPress={() => {
                       setNumberHours(numberHours + 1);
                       setFinHour(finHour + 1);
+                      if(finHour+1 >= 20) {
+                        setPark("Until 20:00");
+                      }
                     }}>
                       <Text style={{fontSize: 35, fontWeight: "800", textAlign: 'center', textAlignVertical: 'center'}}>+</Text>
                     </TouchableOpacity>
@@ -122,10 +171,17 @@ function FreeSpots({data}) {
                     <Text style={{fontWeight: "800", fontSize: 15, color: 'white'}}>To {finHour}:{finMin}</Text>
                   </View>
                   <View style={{ borderRadius: 20 }}>
-                    <TouchableOpacity title={"Park at " + park} style={{backgroundColor: "#3430DE", padding: 10, borderRadius: 20, display: "flex", justifyContent: "center", alignContent: "center"}} >
+                    <TouchableOpacity disabled={`${park}`==="Until 20:00" ? true : false} style={{backgroundColor: `${park}`==="Until 20:00" ? "red" : "#3430DE", padding: 10, borderRadius: 20, display: "flex", justifyContent: "center", alignContent: "center"}} >
                       <Text style={{fontWeight: '800', fontSize: 17, color: 'white', textAlign: "center", textAlignVertical: "center"}} onPress={() => {
-                        setPark("| Done! ✔️")
-                      }}>Park at {park}</Text>
+                        setPark("Parked!")
+                        if(park === "Select Spot" || park === "Choose Spot") {
+                          setPark("Choose Spot");
+                        }
+                        else {
+                          setPark("Parked");
+                          navigation.navigate('Details');
+                        }
+                      }}>{park}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -139,7 +195,8 @@ function FreeSpots({data}) {
 
 }
 
-export default function App() {
+
+function HomeScreen({navigation}) {
   const [short, setShort] = useState(null);
   const [emptySpots, setEmptySpots] = useState([]);
   const [isSelected, setIsSelected] = useState(' '); 
@@ -148,7 +205,7 @@ export default function App() {
 
   const bottomSheetModalRef = useRef(null);
   
-  const snapPoints = ["60%", "90%"];
+  const snapPoints = ["15%", "60%"];
 
   function handlePresentModal(short) {
     bottomSheetModalRef.current?.present();
@@ -237,14 +294,6 @@ export default function App() {
                   }}
                   key={streetname}
                   onPress={() => {
-                    if(on === 0) {
-                      setBike(streetname + " | " + totalspots + " spots");
-                      on = 1;
-                    }
-                    else {
-                      setBike('B');
-                      on = 0;
-                    }
                     const coordinate = {
                       latitude: lat,
                       longitude: lng,
@@ -261,7 +310,7 @@ export default function App() {
                   }}
                 >
                   <View>
-                    <Text style={{fontSize: 15, fontWeight: '800', color: "black", padding: 3}}>{bike}</Text>
+                    <Text style={{fontSize: 10, fontWeight: '800', color: "black", padding: 2}}>{streetname + " | " + totalspots + " spots"}</Text>
                   </View>
                 </Marker>
                 ); 
@@ -271,13 +320,15 @@ export default function App() {
 
             <BottomSheetModal
               ref={bottomSheetModalRef}
-              index={0}
+              index={1}
               snapPoints={snapPoints}
               backgroundStyle={styles.modal}
             >
               <ScrollView>
                 <FreeSpots 
                   data={short}
+                  refs={bottomSheetModalRef}
+                  navigation={navigation}
                 />
               </ScrollView>
             </BottomSheetModal>
@@ -285,6 +336,114 @@ export default function App() {
     </BottomSheetModalProvider>
   );
 }
+
+function DetailsScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: "rgba(40, 58, 63, 0.63)" }}>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+      <Text style={{color: "white", fontSize: 20, fontWeight: "800"}}>🎉 You parked! 🎉</Text>
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Parkt">
+        <Stack.Screen name="PARKT" component={HomeScreen}
+          options={{
+            title: 'PARKT',
+            headerStyle: {
+              backgroundColor: 'rgba(68, 99, 107, 1)',
+              borderRadius: 20,
+              height: 100,
+              background: 'transparent'
+            },
+            headerTransparent: true,
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: '900',
+              backgroundColor: 'rgba(68, 99, 107, 1)',
+              padding: 10,
+              borderRadius: 20,
+              paddingLeft: 20,
+              paddingRight: 20,
+              fontSize: 20,
+              overflow: "hidden"
+            },
+          }}
+        />
+        <Stack.Screen name="Details" component={DetailsScreen} 
+          options={{
+            title: 'PARKT',
+            headerStyle: {
+              backgroundColor: 'rgba(68, 99, 107, 1)',
+              borderRadius: 20,
+              height: 100,
+              background: 'transparent'
+            },
+            headerTransparent: true,
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: '900',
+              backgroundColor: 'rgba(68, 99, 107, 1)',
+              padding: 10,
+              borderRadius: 20,
+              paddingLeft: 20,
+              paddingRight: 20,
+              fontSize: 20,
+              overflow: "hidden"
+            },
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
@@ -332,7 +491,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
-    marginBottom: 10,
+    marginBottom: 10
   },
   empSpots: {
     fontSize: 16,
