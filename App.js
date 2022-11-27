@@ -69,12 +69,12 @@ function FreeSpots({data, refs, navigation}) {
                     <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{name}</Text>
                   </View>
                 </View>
-                <View style={{borderColor:'white',borderBottomWidth:5, padding: 10, marginRight: 30, marginLeft: 30, borderRadius: 20, backgroundColor: "rgba(40, 58, 63, 0.33)"}}>
+                <View style={{borderColor:'white',borderBottomWidth:5, padding: 10, marginRight: 30, marginLeft: 30, borderRadius: 20, backgroundColor: "#30313A"}}>
                   <TextInput defaultValue={text} onChangeText={newText => setText(newText)} style={{fontSize: 20, color:"white", fontWeight:"500", textAlign: "center", paddingRight:30, paddingLeft: 30}}/>
                 </View>
                 <View style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                   <View style={styles.priceTag}>
-                    <View style={{backgroundColor: "rgba(40, 58, 63, 0.33)", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30, marginRight: 10}}>
+                    <View style={{backgroundColor: "#30313A", padding: 10, borderRadius: 20, paddingLeft: 30, paddingRight: 30, marginRight: 10}}>
                       <Text style={{fontWeight: '800', fontSize: 17, color: 'white'}}>{price} RON/hour</Text>
                     </View>
                   </View>
@@ -233,7 +233,7 @@ function HomeScreen({navigation}) {
             showsUserLocation={true}
             showsTraffic={true}
             showsPointsOfInterest={false}
-            minZoomLevel={13}
+            minZoomLevel={9}
             maxZoomLevel={15}
             rotateEnabled={false}
             onPress={e => console.log(e.nativeEvent.coordinate)}
@@ -256,7 +256,15 @@ function HomeScreen({navigation}) {
                 //console.log(shortname + " " + lat);
                 return (
                 <Marker
-                  style={{borderRadius: 20, backgroundColor: `${zona.toLowerCase()}` , padding: 10 }}
+                  style={{borderRadius: 20, backgroundColor: `${zona.toLowerCase()}` , padding: 10, shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,}}
                   coordinate={{
                     latitude: lat,
                     longitude: lng
@@ -291,7 +299,15 @@ function HomeScreen({navigation}) {
                 var on = 0;
                 return (
                 <Marker
-                  style={{borderRadius: 20, backgroundColor: "white", padding: 10 }}
+                  style={{borderRadius: 20, backgroundColor: "white", padding: 10, shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+
+                    elevation: 5, }}
                   coordinate={{
                     latitude: lat,
                     longitude: lng
@@ -403,19 +419,28 @@ function App() {
               backgroundColor: 'rgba(68, 99, 107, 1)',
               borderRadius: 20,
               height: 100,
-              background: 'transparent'
+              background: 'transparent',
             },
             headerTransparent: true,
             headerTintColor: 'white',
             headerTitleStyle: {
               fontWeight: '900',
-              backgroundColor: 'rgba(68, 99, 107, 1)',
+              backgroundColor: '#181E23',
               padding: 10,
               borderRadius: 20,
               paddingLeft: 20,
               paddingRight: 20,
               fontSize: 20,
-              overflow: "hidden"
+              overflow: "hidden",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
             },
           }}
         />
@@ -438,7 +463,16 @@ function App() {
               paddingLeft: 20,
               paddingRight: 20,
               fontSize: 20,
-              overflow: "hidden"
+              overflow: "hidden",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
             },
           }}
         />
@@ -462,16 +496,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     borderRadius: 45,
-    backgroundColor: 'rgba(68, 99, 107, 1)',
+    backgroundColor: '#181E23',
     alignItems: "center",
     textAlign: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+
+      elevation: 5,
   },
   containerModal: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: "rgba(40, 58, 63, 0.33)",
+    backgroundColor: "#30313A",
     padding: 15,
     margin: 10,
     marginLeft: 30,
@@ -505,7 +548,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   expContainer: {
-    backgroundColor: "rgba(40, 58, 63, 0.33)",
+    backgroundColor: "#30313A",
     borderRadius: 20,
     marginLeft: 10,
     marginRight: 10,
@@ -518,7 +561,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    backgroundColor: "rgba(40, 58, 63, 0.33)",
+    backgroundColor: "#30313A",
     padding: 15,
     margin: 10,
     marginLeft: 30,
@@ -530,7 +573,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignContent: 'center',
-    backgroundColor: "rgba(40, 58, 63, 0.33)",
+    backgroundColor: "#30313A",
     padding: 15,
     margin: 10,
     marginLeft: 30,
